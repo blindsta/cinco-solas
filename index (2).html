@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La Misión Final — El Código de las Cinco Solas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#fff4cf; --gold:#ffd35a; --gold2:#ffb52e; --red:#b9362b; --red2:#7d1f1d;
+  --brown:#4a2617; --brown2:#27140d; --green:#4e7d46; --blue:#65bde8; --ink:#2b241e;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:'Nunito',system-ui,sans-serif;background:#17100c;color:#fff;overflow-x:hidden}
+body{background:radial-gradient(circle at 50% 0%,#5d2f1f 0,#2d1710 35%,#120b08 100%)}
+#app{min-height:100vh;position:relative;overflow:hidden}
+#app::before{content:"";position:fixed;inset:0;pointer-events:none;background:
+ radial-gradient(circle at 15% 20%,rgba(255,206,87,.14),transparent 25%),
+ radial-gradient(circle at 80% 10%,rgba(255,115,49,.12),transparent 25%),
+ linear-gradient(to bottom,rgba(255,255,255,.03),transparent 35%);mix-blend-mode:screen;z-index:0}
+.leaves{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.leaf{position:absolute;font-size:22px;animation:fall linear infinite;opacity:.85;filter:drop-shadow(0 3px 2px rgba(0,0,0,.2))}
+@keyframes fall{from{transform:translateY(-10vh) rotate(0)}to{transform:translateY(115vh) rotate(540deg)}}
+.screen{display:none;min-height:100vh;padding:28px 24px 36px;position:relative;z-index:2;animation:screenIn .65s ease both}
+.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center}
+@keyframes screenIn{from{opacity:0;transform:scale(.985) translateY(10px)}to{opacity:1;transform:none}}
+.topbar{position:absolute;top:16px;left:20px;right:20px;display:flex;justify-content:space-between;gap:12px;align-items:center;z-index:5}
+.badge{background:linear-gradient(#fff6d2,#efd89d);color:#5c2f1e;padding:9px 15px;border-radius:999px;border:3px solid #8f4e2e;font-weight:900;box-shadow:0 5px 0 #5c2b1f,0 12px 28px #0007}
+.sound-btn,.mini-btn{border:0;border-radius:999px;padding:10px 14px;background:#f6d979;color:#4a2416;font-weight:900;cursor:pointer;box-shadow:0 5px 0 #7d3a22;transition:.2s}.sound-btn:active,.mini-btn:active{transform:translateY(4px);box-shadow:0 1px 0 #7d3a22}
+.hero{width:min(1120px,95vw);text-align:center}
+.kicker{font-family:'Baloo 2',cursive;font-weight:800;letter-spacing:.08em;color:#ffd86c;text-shadow:0 3px 0 #7b2b1b,0 7px 15px #0008;font-size:clamp(18px,2vw,28px)}
+h1,h2,h3{font-family:'Baloo 2',cursive;margin:.2em 0;line-height:1}
+h1{font-size:clamp(46px,7vw,94px);color:#fff1b3;text-shadow:0 5px 0 #842b1f,0 10px 28px #000b}
+h2{font-size:clamp(34px,5vw,68px);color:#ffe9a0;text-shadow:0 4px 0 #7d2a20}
+.subtitle{font-size:clamp(18px,2vw,27px);font-weight:900;color:#fff6dd;max-width:900px;margin:12px auto 24px}
+.wood-sign{display:inline-block;background:linear-gradient(180deg,#8a4b28,#643219);padding:12px 25px;border:5px solid #3b1c11;border-radius:18px;box-shadow:inset 0 0 0 3px #c87b3c,0 9px 0 #2d150d,0 18px 30px #0007;transform:rotate(-1deg)}
+.wood-sign span{font-family:'Baloo 2';font-size:clamp(22px,3vw,38px);font-weight:800;color:#fff2bf;text-shadow:0 3px 0 #4e2113}
+.big-btn{border:0;cursor:pointer;margin-top:22px;padding:18px 34px;border-radius:18px;background:linear-gradient(#ffd65c,#f39b28);color:#572719;font-family:'Baloo 2';font-weight:800;font-size:clamp(22px,2.4vw,32px);box-shadow:0 7px 0 #963d1e,0 16px 35px #0007;transition:.2s;position:relative;overflow:hidden}
+.big-btn:hover{transform:translateY(-2px) scale(1.02);filter:brightness(1.05)}.big-btn:active{transform:translateY(6px);box-shadow:0 1px 0 #963d1e}
+.big-btn::after{content:"";position:absolute;inset:-50%;background:linear-gradient(100deg,transparent 35%,#fff8 50%,transparent 65%);transform:translateX(-70%);animation:shine 3.5s infinite}@keyframes shine{0%,55%{transform:translateX(-70%)}75%,100%{transform:translateX(70%)}}
+.castle{position:relative;width:min(1040px,95vw);height:430px;margin:26px auto 0;background:linear-gradient(#3b2a25,#1c1513);border:8px solid #6e4737;border-radius:40px 40px 18px 18px;box-shadow:inset 0 0 0 5px #21120d,0 25px 55px #000a;overflow:hidden}
+.castle::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 54px,#ffffff07 55px 57px),repeating-linear-gradient(90deg,transparent 0 110px,#00000016 111px 114px);opacity:.8}
+.door{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:52%;height:88%;background:radial-gradient(circle at 50% 22%,#704a33 0,#4b2c20 32%,#21130f 100%);border:7px solid #180d09;border-radius:180px 180px 0 0;box-shadow:inset 0 0 40px #000a,0 0 0 5px #84543a}
+.door::before{content:"";position:absolute;inset:18px;border-radius:150px 150px 0 0;border:3px solid #9c683f55}
+.locks{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);display:flex;gap:14px;flex-wrap:wrap;justify-content:center;width:90%}
+.lock{width:120px;height:120px;border-radius:24px;background:linear-gradient(#a1a1a1,#535353);border:5px solid #242424;box-shadow:inset 0 4px 0 #ddd8,0 8px 0 #1c1c1c,0 12px 25px #0008;display:flex;align-items:center;justify-content:center;position:relative;transition:.5s}
+.lock::before{content:"";position:absolute;top:-38px;width:56px;height:55px;border:10px solid #777;border-bottom:0;border-radius:32px 32px 0 0}
+.lock span{font-size:44px;filter:grayscale(1) brightness(.9)}
+.lock.open{background:linear-gradient(#ffd86c,#d38b22);border-color:#7a4315;transform:translateY(-8px) rotate(-3deg);box-shadow:0 0 30px #ffc43a99,0 8px 0 #5b2b10}
+.lock.open::before{transform:translateX(14px) rotate(28deg);transform-origin:left bottom;border-color:#f0b542}.lock.open span{filter:none}
+.panel{width:min(1100px,96vw);background:linear-gradient(180deg,#fff7d9,#f7e7b1);color:#3b271d;border:7px solid #8e4c2c;border-radius:28px;box-shadow:inset 0 0 0 4px #ddb06b,0 18px 50px #0009;padding:24px;position:relative}
+.panel::before,.panel::after{content:"🍂";position:absolute;font-size:42px;top:-26px}.panel::before{left:30px;transform:rotate(-18deg)}.panel::after{right:30px;transform:rotate(16deg)}
+.challenge-title{text-align:center;font-family:'Baloo 2';font-size:clamp(30px,4vw,54px);font-weight:800;color:#7d251e;margin:2px 0 8px}
+.challenge-sub{text-align:center;font-size:clamp(17px,1.8vw,24px);font-weight:900;color:#69412c;margin-bottom:18px}
+.timer{width:90px;height:90px;border-radius:50%;margin:0 auto 18px;background:#7f241d;border:6px solid #ffc94a;display:grid;place-items:center;font-family:'Baloo 2';font-size:36px;font-weight:800;color:#fff3bd;box-shadow:0 6px 0 #4f1714,0 10px 25px #0005}.timer.pulse{animation:pulse .7s infinite}@keyframes pulse{50%{transform:scale(1.07);box-shadow:0 0 25px #ffb12d}}
+.options{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px}
+.option{border:4px solid #b96a37;background:#fffaf0;border-radius:18px;padding:18px;min-height:110px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:clamp(16px,1.7vw,22px);cursor:pointer;box-shadow:0 6px 0 #8c4a29;transition:.2s}.option:hover{transform:translateY(-3px);background:#fff3cf}.option.selected{outline:5px solid #5a9be8;background:#e8f4ff}.option.correct{background:#d7f1cb;border-color:#4d8a46;box-shadow:0 6px 0 #2f5a2c}.option.wrong{background:#f8d1cd;border-color:#ae3c36;box-shadow:0 6px 0 #70241f}
+.reveal{margin-top:18px;padding:16px;border-radius:16px;background:#fff2c6;border:3px dashed #b96a37;font-weight:900;font-size:20px;display:none;text-align:center}.reveal.show{display:block;animation:pop .4s ease}@keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:none;opacity:1}}
+.controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.small-btn{border:0;border-radius:14px;padding:12px 18px;font-weight:900;font-size:17px;cursor:pointer;background:#7d271f;color:white;box-shadow:0 5px 0 #4b1713}.small-btn.gold{background:#e6a12d;color:#3c2118;box-shadow:0 5px 0 #8e4e18}.small-btn:active{transform:translateY(4px);box-shadow:none}
+.word-order{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:16px 0}.word-chip{padding:16px 20px;border-radius:16px;background:#fffaf0;border:4px solid #b96a37;color:#4a2b1e;font-weight:900;font-size:22px;cursor:pointer;box-shadow:0 5px 0 #8c4a29;transition:.2s}.word-chip.active{transform:translateY(-5px) scale(1.03);outline:5px solid #5a9be8}
+.bridge-wrap{display:grid;grid-template-columns:1fr 2fr 1fr;align-items:center;gap:12px;margin:16px 0}.cliff{height:180px;border-radius:20px;background:linear-gradient(#5f8e4a 0 28%,#6b4b2e 29% 100%);display:flex;align-items:flex-start;justify-content:center;padding-top:20px;font-family:'Baloo 2';font-size:28px;font-weight:800;color:#fff8d9;text-shadow:0 3px 0 #2e2e2e}.bridge-area{height:190px;position:relative;background:linear-gradient(#70c9ef 0 65%,#315a75 66%);border-radius:18px;overflow:hidden}.bridge-area::after{content:"";position:absolute;inset:auto 0 0;height:58px;background:linear-gradient(#24495e,#193447)}.bridge{position:absolute;left:5%;right:5%;top:78px;height:28px;background:linear-gradient(#965429,#5d2e18);border:4px solid #3b1d0f;transform-origin:center;box-shadow:0 5px 10px #0006;display:flex;align-items:center;justify-content:center;color:#fff4c5;font-weight:900}.bridge.good{box-shadow:0 0 30px #ffe76d,0 5px 10px #0006}.bridge.bad{animation:breakbridge .7s forwards}@keyframes breakbridge{to{transform:rotate(12deg) translateY(80px);opacity:.2}}
+.crown-zone{text-align:center;padding:8px 0}.crown{font-size:110px;filter:drop-shadow(0 10px 8px #0004);animation:float 2.5s ease-in-out infinite}@keyframes float{50%{transform:translateY(-9px)}}
+.final-sequence{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:18px 0}.seq-card{width:180px;min-height:120px;padding:14px;border-radius:18px;background:#fff9e6;border:4px solid #b56734;box-shadow:0 6px 0 #7f3e20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#492a1e;font-weight:900;cursor:pointer;transition:.2s}.seq-card .ico{font-size:36px}.seq-card.selected{outline:5px solid #5d9ee8;transform:translateY(-5px)}.sequence-output{min-height:72px;border:4px dashed #b56734;border-radius:16px;background:#fff4cf;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;color:#6a402b;font-weight:900}
+.unlock{font-size:clamp(36px,5vw,70px);color:#ffeaa2;text-shadow:0 4px 0 #8b2a1f,0 0 25px #ffd44e;animation:unlockPop .8s cubic-bezier(.2,1.7,.3,1) both}@keyframes unlockPop{0%{transform:scale(.2) rotate(-8deg);opacity:0}100%{transform:none;opacity:1}}
+.sola-banner{margin:16px auto 0;display:inline-block;padding:15px 24px;border-radius:18px;background:linear-gradient(#c43d2f,#7e201c);border:5px solid #5a1814;color:#fff5c1;font-family:'Baloo 2';font-size:clamp(28px,4vw,50px);font-weight:800;box-shadow:0 8px 0 #43110f,0 0 35px #ffc24e55}
+.final-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:min(1080px,96vw);margin:20px auto}.final-card{border-radius:22px;padding:18px 10px;background:linear-gradient(#fff3c8,#eccf83);color:#5b2e20;border:5px solid #9b512f;box-shadow:0 8px 0 #5e2b1b;text-align:center;font-weight:900}.final-card .emoji{font-size:42px}.final-card strong{display:block;font-family:'Baloo 2';font-size:23px;color:#8b251f}.final-card small{font-size:15px}
+.glory{font-family:'Baloo 2';font-size:clamp(48px,8vw,105px);font-weight:800;color:#fff0a8;text-align:center;text-shadow:0 5px 0 #8b291f,0 0 40px #ffc34f;margin:10px 0}.verse-ribbon{max-width:930px;background:linear-gradient(#a53b2b,#6f1f1b);border:5px solid #4e1512;padding:14px 22px;border-radius:20px;color:#fff4c4;font-size:clamp(18px,2vw,27px);font-weight:900;text-align:center;box-shadow:0 7px 0 #34100d}
+.confetti{position:fixed;top:-20px;width:12px;height:18px;background:#ffd25a;z-index:20;animation:confetti 2.8s linear forwards}@keyframes confetti{to{transform:translateY(110vh) rotate(800deg);opacity:.8}}
+.toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%);background:#1c120e;color:#fff1bd;border:3px solid #cc8a38;padding:12px 18px;border-radius:14px;font-weight:900;z-index:40;opacity:0;pointer-events:none;transition:.3s}.toast.show{opacity:1;bottom:38px}
+@media(max-width:800px){.options{grid-template-columns:1fr}.castle{height:470px}.lock{width:95px;height:95px}.final-grid{grid-template-columns:1fr 1fr}.final-card:last-child{grid-column:1/-1}.bridge-wrap{grid-template-columns:1fr}.cliff{height:90px}.bridge-area{order:2}.screen{padding-top:70px}}
+
+/* === AJUSTE DE ALINEACIÓN · PANTALLA FINAL === */
+#s9{
+  padding:32px 24px;
+}
+#s9 .hero{
+  width:min(1380px,96vw);
+  max-width:1380px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+#s9 .glory{
+  width:100%;
+  margin:0 auto 24px;
+  font-size:clamp(44px,5.8vw,92px);
+  line-height:1.05;
+  white-space:nowrap;
+  text-align:center;
+}
+#s9 .wood-sign{
+  display:block;
+  width:min(780px,88vw);
+  margin:0 auto;
+  transform:none;
+}
+#s9 .wood-sign span{
+  display:block;
+  width:100%;
+  text-align:center;
+  line-height:1.15;
+}
+#s9 .subtitle{
+  width:min(760px,88vw);
+  max-width:760px;
+  margin:26px auto 20px !important;
+  text-align:center;
+  line-height:1.35;
+}
+#s9 .verse-ribbon{
+  width:min(760px,88vw);
+  max-width:760px;
+  margin:0 auto;
+}
+#s9 .controls{
+  width:100%;
+  margin:28px auto 0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+}
+#s9 .controls .big-btn{
+  margin-top:0;
+}
+@media(max-width:900px){
+  #s9 .glory{
+    white-space:normal;
+    font-size:clamp(40px,8vw,68px);
+  }
+  #s9 .controls{
+    flex-direction:column;
+  }
+  #s9 .controls .big-btn{
+    width:min(520px,92vw);
+  }
+}
+
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="leaves" id="leaves"></div>
+  <div class="toast" id="toast">¡Excelente!</div>
+
+  <section class="screen active" id="s0">
+    <div class="topbar"><div class="badge">Clausura · Mes de la Reforma</div><button class="sound-btn" onclick="toggleSound()">🔊 Sonido</button></div>
+    <div class="hero">
+      <div class="kicker">LA MISIÓN FINAL</div>
+      <h1>EL CÓDIGO DE LAS CINCO SOLAS</h1>
+      <div class="wood-sign"><span>5 cerraduras · 1 mensaje final</span></div>
+      <p class="subtitle">Cada cerradura tiene un desafío diferente. Si logran abrirlas todas, descubrirán el mensaje final de toda la serie.</p>
+      <button class="big-btn" onclick="go(1)">🚪 ENTRAR A LA MISIÓN</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s1">
+    <div class="topbar"><div class="badge">Puerta de la Reforma</div><button class="mini-btn" onclick="go(0)">↩ Inicio</button></div>
+    <div class="hero"><h2>LA PUERTA ESTÁ CERRADA</h2><p class="subtitle">Cinco cerraduras guardan el mensaje final. Cada reto abrirá una.</p></div>
+    <div class="castle">
+      <div class="door"><div class="locks" id="locks">
+        <div class="lock" id="lock1"><span>📖</span></div><div class="lock" id="lock2"><span>🎁</span></div><div class="lock" id="lock3"><span>❤️</span></div><div class="lock" id="lock4"><span>✝️</span></div><div class="lock" id="lock5"><span>👑</span></div>
+      </div></div>
+    </div>
+    <button class="big-btn" onclick="go(2)">🔐 ABRIR LA PRIMERA CERRADURA</button>
+  </section>
+
+  <section class="screen" id="s2">
+    <div class="panel">
+      <div class="challenge-title">🔒 CERRADURA 1 · LA PALABRA DESORDENADA</div>
+      <div class="challenge-sub">Toca las frases en el orden correcto para reconstruir 2 Timoteo 3:16.</div>
+      <div class="timer" id="t1">20</div>
+      <div class="word-order" id="wordBank">
+        <div class="word-chip" data-id="A">es inspirada por Dios</div>
+        <div class="word-chip" data-id="B">Toda la Escritura</div>
+        <div class="word-chip" data-id="C">y útil para enseñar</div>
+      </div>
+      <div class="sequence-output" id="wordOut">Tu orden aparecerá aquí…</div>
+      <div class="controls"><button class="small-btn" onclick="resetWords()">↺ Reiniciar</button><button class="small-btn gold" onclick="checkWords()">✅ Comprobar</button></div>
+      <div class="reveal" id="r1">📖 ¡Correcto! La Palabra de Dios es nuestra autoridad.</div>
+      <div class="controls"><button class="small-btn" id="n1" style="display:none" onclick="unlockAndGo(1,3)">🔓 Desbloquear SOLA SCRIPTURA</button></div>
+    </div>
+  </section>
+
+  <section class="screen" id="s3">
+    <div class="panel">
+      <div class="challenge-title">🔒 CERRADURA 2 · EL PRECIO IMPOSIBLE</div>
+      <div class="challenge-sub">¿Cuál de estos puede comprar la salvación?</div>
+      <div class="timer" id="t2">20</div>
+      <div class="options" id="priceOptions">
+        <div class="option" onclick="pickPrice(this,false)">🏆 1,000 buenas obras</div>
+        <div class="option" onclick="pickPrice(this,false)">🌟 Ser mejor que todos</div>
+        <div class="option" onclick="pickPrice(this,true)">🎁 Ninguno: Dios la da por gracia</div>
+      </div>
+      <div class="reveal" id="r2"><b>¡Exacto!</b> No podemos comprarla ni ganarla. Dios nos salva por gracia gracias a lo que Cristo hizo.</div>
+      <div class="controls"><button class="small-btn" id="n2" style="display:none" onclick="unlockAndGo(2,4)">🔓 Desbloquear SOLA GRATIA</button></div>
+    </div>
+  </section>
+
+  <section class="screen" id="s4">
+    <div class="panel">
+      <div class="challenge-title">🔒 CERRADURAS 3 Y 4 · EL PUENTE</div>
+      <div class="challenge-sub">Solo un puente puede sostener todo el peso. ¿Cuál conecta al ser humano con Dios?</div>
+      <div class="bridge-wrap">
+        <div class="cliff">NOSOTROS</div>
+        <div class="bridge-area"><div class="bridge" id="bridge">¿QUÉ PUENTE?</div></div>
+        <div class="cliff">DIOS</div>
+      </div>
+      <div class="options">
+        <div class="option" onclick="pickBridge(this,'bad','Mis méritos')">🏆 Mis méritos</div>
+        <div class="option" onclick="pickBridge(this,'bad','Ser buena persona')">❤️ Ser buena persona</div>
+        <div class="option" onclick="pickBridge(this,'good','Jesucristo')">✝️ Jesucristo</div>
+      </div>
+      <div class="reveal" id="r3">✝️ Cristo es el único mediador. Y lo que Él hizo lo recibimos <b>por fe</b>, no ganándolo.</div>
+      <div class="controls"><button class="small-btn" id="n3" style="display:none" onclick="unlockDouble()">🔓 Desbloquear DOS cerraduras</button></div>
+    </div>
+  </section>
+
+  <section class="screen" id="s5">
+    <div class="panel">
+      <div class="challenge-title">🔒 CERRADURA 5 · ¿QUIÉN RECIBE LA CORONA?</div>
+      <div class="challenge-sub">Todo viene de Dios, todo es por Él y todo es para Él. ¿Quién recibe la gloria?</div>
+      <div class="crown-zone"><div class="crown">👑</div></div>
+      <div class="options">
+        <div class="option" onclick="pickGlory(this,false)">🙋 Yo, porque tomé buenas decisiones</div>
+        <div class="option" onclick="pickGlory(this,true)">✨ Dios, porque todo viene de Él</div>
+        <div class="option" onclick="pickGlory(this,false)">⚖️ Mitad Dios y mitad yo</div>
+      </div>
+      <div class="reveal" id="r4">👑 ¡Correcto! <b>Soli Deo Gloria:</b> toda la gloria pertenece a Dios.</div>
+      <div class="controls"><button class="small-btn" id="n4" style="display:none" onclick="unlockAndGo(5,6)">🔓 ABRIR LA ÚLTIMA CERRADURA</button></div>
+    </div>
+  </section>
+
+  <section class="screen" id="s6">
+    <div class="hero">
+      <div class="unlock">✅ CERRADURAS ABIERTAS</div>
+      <h2 style="margin-top:22px">PERO LA MISIÓN AÚN NO HA TERMINADO…</h2>
+      <p class="subtitle">Las cinco Solas nunca fueron cinco mensajes separados.</p>
+      <button class="big-btn" onclick="go(7)">🧩 DESCUBRIR EL MENSAJE FINAL</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s7">
+    <div class="panel">
+      <div class="challenge-title">🧩 CONSTRUYAN EL MENSAJE</div>
+      <div class="challenge-sub">Toca las cinco tarjetas en el orden que cuenta la historia completa.</div>
+      <div class="final-sequence" id="seqBank">
+        <div class="seq-card" data-id="5"><div class="ico">👑</div><div>Toda la gloria pertenece a Dios</div></div>
+        <div class="seq-card" data-id="3"><div class="ico">❤️</div><div>Recibimos por medio de la fe</div></div>
+        <div class="seq-card" data-id="1"><div class="ico">📖</div><div>Dios nos habla por su Palabra</div></div>
+        <div class="seq-card" data-id="4"><div class="ico">✝️</div><div>Nuestra fe está puesta en Cristo</div></div>
+        <div class="seq-card" data-id="2"><div class="ico">🎁</div><div>Dios nos salva por su gracia</div></div>
+      </div>
+      <div class="sequence-output" id="seqOut">Construyan aquí el mensaje…</div>
+      <div class="controls"><button class="small-btn" onclick="resetSeq()">↺ Reiniciar</button><button class="small-btn gold" onclick="checkSeq()">🔥 Comprobar misión</button></div>
+      <div class="reveal" id="r5">🎉 ¡TODO ENCAJA! Las cinco Solas cuentan un solo mensaje.</div>
+      <div class="controls"><button class="small-btn" id="n5" style="display:none" onclick="go(8)">🏁 COMPLETAR LA MISIÓN</button></div>
+    </div>
+  </section>
+
+  <section class="screen" id="s8">
+    <div class="hero">
+      <div class="kicker">CÓDIGO COMPLETADO</div>
+      <h1 style="font-size:clamp(42px,6vw,80px)">LAS CINCO SOLAS</h1>
+      <div class="final-grid">
+        <div class="final-card"><div class="emoji">📖</div><strong>SOLA SCRIPTURA</strong><small>La Palabra es nuestra autoridad</small></div>
+        <div class="final-card"><div class="emoji">🎁</div><strong>SOLA GRATIA</strong><small>Dios nos salva por gracia</small></div>
+        <div class="final-card"><div class="emoji">❤️</div><strong>SOLA FIDE</strong><small>Recibimos por medio de la fe</small></div>
+        <div class="final-card"><div class="emoji">✝️</div><strong>SOLUS CHRISTUS</strong><small>Solo Cristo es nuestro mediador</small></div>
+        <div class="final-card"><div class="emoji">👑</div><strong>SOLI DEO GLORIA</strong><small>Toda la gloria pertenece a Dios</small></div>
+      </div>
+      <button class="big-btn" onclick="grandFinal()">🔥 GRAN CIERRE</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s9">
+    <div class="hero">
+      <div class="glory">TODA LA GLORIA A DIOS</div>
+      <div class="wood-sign"><span>Las cinco Solas nos llevan de nuevo a la misma verdad</span></div>
+      <p class="subtitle" style="margin-top:28px">La Palabra nos lleva a Cristo, y nuestra vida debe darle toda la gloria a Dios.</p>
+      <div class="verse-ribbon">¡REFORMA! &nbsp;  &nbsp; ¡VOLVAMOS A LA PALABRA!</div>
+      <div class="controls"><button class="big-btn" onclick="repeatFinal()">📣 REPETIR EL GRITO FINAL</button><button class="big-btn" onclick="restart()">↺ VOLVER AL INICIO</button></div>
+    </div>
+  </section>
+</div>
+<script>
+let current=0, soundOn=true, timers={};
+const correctWord=['B','A','C']; let wordSel=[], seqSel=[];
+function go(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('s'+n).classList.add('active');current=n;window.scrollTo(0,0);tone(480,.08); if([2,3].includes(n)) startTimer(n===2?'t1':'t2',20)}
+function tone(freq=440,d=.12){if(!soundOn)return;try{let a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=freq;g.gain.setValueAtTime(.045,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d);o.start();o.stop(a.currentTime+d)}catch(e){}}
+function successSound(){tone(620,.1);setTimeout(()=>tone(820,.13),90);setTimeout(()=>tone(1040,.18),180)}
+function failSound(){tone(220,.15);setTimeout(()=>tone(160,.18),120)}
+function toggleSound(){soundOn=!soundOn;showToast(soundOn?'🔊 Sonido activado':'🔇 Sonido desactivado')}
+function showToast(t){let x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1500)}
+function startTimer(id,s){clearInterval(timers[id]);let el=document.getElementById(id);if(!el)return;el.textContent=s;el.classList.remove('pulse');timers[id]=setInterval(()=>{s--;el.textContent=s;if(s<=5)el.classList.add('pulse');if(s<=0){clearInterval(timers[id]);el.textContent='⏰';failSound()}},1000)}
+function stopTimer(id){clearInterval(timers[id])}
+function unlockAndGo(n,next){document.getElementById('lock'+n)?.classList.add('open');successSound();confetti(28);setTimeout(()=>go(next),650)}
+function unlockDouble(){document.getElementById('lock3').classList.add('open');document.getElementById('lock4').classList.add('open');successSound();confetti(45);setTimeout(()=>go(5),900)}
+function resetWords(){wordSel=[];document.querySelectorAll('#wordBank .word-chip').forEach(x=>x.classList.remove('active'));renderWordOut()}
+function renderWordOut(){let out=document.getElementById('wordOut');out.innerHTML=wordSel.length?wordSel.map(x=>`<span>${document.querySelector(`#wordBank [data-id="${x}"]`).textContent}</span>`).join(' ➜ '):'Tu orden aparecerá aquí…'}
+document.querySelectorAll('#wordBank .word-chip').forEach(el=>el.addEventListener('click',()=>{if(wordSel.includes(el.dataset.id))return;wordSel.push(el.dataset.id);el.classList.add('active');renderWordOut()}));
+function checkWords(){if(JSON.stringify(wordSel)===JSON.stringify(correctWord)){stopTimer('t1');document.getElementById('r1').classList.add('show');document.getElementById('n1').style.display='inline-block';successSound();showToast('¡Primera cerradura lista!')}else{failSound();showToast('Casi… revisen el orden') }}
+function pickPrice(el,good){document.querySelectorAll('#priceOptions .option').forEach(x=>x.classList.remove('selected','correct','wrong'));el.classList.add(good?'correct':'wrong');if(good){stopTimer('t2');document.getElementById('r2').classList.add('show');document.getElementById('n2').style.display='inline-block';successSound()}else{failSound();showToast('Ese precio no puede comprar la salvación')}}
+function pickBridge(el,type,label){document.querySelectorAll('#s4 .option').forEach(x=>x.classList.remove('selected','correct','wrong'));let b=document.getElementById('bridge');b.textContent=label;b.className='bridge '+(type==='good'?'good':'bad');el.classList.add(type==='good'?'correct':'wrong');if(type==='good'){document.getElementById('r3').classList.add('show');document.getElementById('n3').style.display='inline-block';successSound()}else{failSound();showToast('Ese puente no puede sostener el peso');setTimeout(()=>{b.className='bridge';b.textContent='¿QUÉ PUENTE?'},850)}}
+function pickGlory(el,good){document.querySelectorAll('#s5 .option').forEach(x=>x.classList.remove('correct','wrong'));el.classList.add(good?'correct':'wrong');if(good){document.getElementById('r4').classList.add('show');document.getElementById('n4').style.display='inline-block';successSound()}else{failSound();showToast('Piensen: ¿de quién viene todo?')}}
+document.querySelectorAll('#seqBank .seq-card').forEach(el=>el.addEventListener('click',()=>{if(seqSel.includes(el.dataset.id))return;seqSel.push(el.dataset.id);el.classList.add('selected');renderSeq()}));
+function renderSeq(){let out=document.getElementById('seqOut');out.innerHTML=seqSel.length?seqSel.map(id=>{let e=document.querySelector(`#seqBank [data-id="${id}"]`);return `<span>${e.querySelector('.ico').textContent} ${e.children[1].textContent}</span>`}).join(' ➜ '):'Construyan aquí el mensaje…'}
+function resetSeq(){seqSel=[];document.querySelectorAll('#seqBank .seq-card').forEach(x=>x.classList.remove('selected'));renderSeq()}
+function checkSeq(){if(JSON.stringify(seqSel)===JSON.stringify(['1','2','3','4','5'])){document.getElementById('r5').classList.add('show');document.getElementById('n5').style.display='inline-block';successSound();confetti(50)}else{failSound();showToast('Todavía no encaja. Piensen en la historia completa.')}}
+function grandFinal(){go(9);confetti(120);successSound();setTimeout(()=>successSound(),450)}
+function repeatFinal(){confetti(80);successSound();showToast('¡REFORMA! — ¡VOLVAMOS A LA PALABRA!')}
+function restart(){location.reload()}
+function confetti(n=50){for(let i=0;i<n;i++){let c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=['#ffd25a','#d5412f','#ef7f2d','#7fa64d','#fff0b1'][Math.floor(Math.random()*5)];c.style.animationDelay=(Math.random()*.6)+'s';c.style.transform=`rotate(${Math.random()*180}deg)`;document.body.appendChild(c);setTimeout(()=>c.remove(),3400)}}
+(function leaves(){const box=document.getElementById('leaves');let chars=['🍁','🍂','🍁','🍂','🍃'];for(let i=0;i<18;i++){let l=document.createElement('div');l.className='leaf';l.textContent=chars[Math.floor(Math.random()*chars.length)];l.style.left=Math.random()*100+'vw';l.style.animationDuration=(8+Math.random()*9)+'s';l.style.animationDelay=(-Math.random()*12)+'s';l.style.fontSize=(16+Math.random()*22)+'px';box.appendChild(l)}})();
+</script>
+</body>
+</html>
